@@ -1,0 +1,44 @@
+#=================================
+#Deve ser unico dentro de sua aws
+#=================================
+service: nodeless
+
+#=================================
+#Defimos que iremos usar a aws, mas pode ser do google wathever. 
+#Versão do node
+#=================================
+provider:
+  name: aws
+  runtime: nodejs10.x
+  #region: sa-east-1         #São Paulo
+  memorysize: 256
+  iamRoleStatements:        #Quais serviços da AWS a função PODE ACESSAR
+    - Effect: Allow         #Pretendo adicionar permissões
+      Action:
+        - s3:GetObject        #Permito pegar arquivos do S3 
+        - s3:PutObject        #Permito colocar arquivos do S3
+      Resource:
+        - "arn:aws:s3:::*"    #Permitir quais buckets do s3 minha function pode ter       
+
+#========================================
+#Faz referencia ao arquaivo que iremos colocar a function
+#========================================
+functions:
+  optimizer:
+    handler: optimizer.handle 
+    enviroment: 
+      bucket: serverless-jgcol
+    events:
+      - s3:
+          bucket: serverless-jgcol
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploads/
+            - suffix: .jpg
+      - s3:
+          bucket: serverless-jgcol
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploads/
+            - suffix: .png
+              
