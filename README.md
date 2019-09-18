@@ -2,6 +2,9 @@
 
 ## Objetivo: 
   Conhecer funcionamento dos serviços da AWS, principalmente S3 e Lambda.
+  
+## Funcionalidade:
+  Criar uma função Lambda para otimizar imagens que são enviadas para o S3.
 
 ## Stacks:  
   - AWS;
